@@ -171,6 +171,13 @@ namespace Library
                         throw new Exception("Значения не могут быть меньше нуля");
                     }
 
+                    var isbnCheck = db.Books.Where(b => b.Isbn == form.textBoxIsbn.Text).FirstOrDefault();
+
+                    if (isbnCheck != null)
+                    {
+                        throw new Exception("Книга с таким ISBN уже есть");
+                    }
+
                     Book book = new Book
                     {
                         Name = form.textBoxName.Text,
@@ -241,6 +248,14 @@ namespace Library
                         throw new Exception("Значения не могут быть меньше нуля");
                     }
 
+                    var isbnCheck = db.Books.Where(b => b.Isbn == form.textBoxIsbn.Text).FirstOrDefault();
+
+                    if (isbnCheck != null && isbnCheck.Id != id)
+                    {
+                        throw new Exception("Книга с таким ISBN уже есть");
+                    }
+
+
                     book.Name = form.textBoxName.Text;
                     book.Annotation = form.richTextBoxAnnotation.Text;
                     book.Isbn = form.textBoxIsbn.Text;
@@ -264,6 +279,35 @@ namespace Library
 
         private void ButtonDelete_Click(object sender, EventArgs e)
         {
+            int id = (int)dataGridViewBooks.SelectedRows[0].Cells["colId"].Value;
+            using (var db = new LibraryShtinContext())
+            {
+                try
+                {
+                    DialogResult result = MessageBox.Show(
+                        "Вы уверены, что хотите удалить книгу?",
+                        "Подтверждение",
+                        MessageBoxButtons.OKCancel,
+                        MessageBoxIcon.Question
+                    );
+
+                    if (result == DialogResult.Cancel)
+                    {
+                        return;
+                    }
+
+                    var book = db.Books.FirstOrDefault(b => b.Id == id);
+
+                    db.Books.Remove(book);
+                    db.SaveChanges();
+                    LoadBooks();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                }
+            }
 
         }
     }

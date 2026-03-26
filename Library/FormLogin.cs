@@ -15,6 +15,9 @@ namespace Library
         private void ButtonLogin_Click(object sender, EventArgs e)
         {
 
+            textBoxPassword.Text = "libadmin1";
+            textBoxLogin.Text = "admin@lib.ru";
+
             if (String.IsNullOrWhiteSpace(textBoxPassword.Text) || String.IsNullOrWhiteSpace(textBoxLogin.Text))
             {
                 MessageBox.Show("Введите логин и пароль", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Warning);

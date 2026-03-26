@@ -29,23 +29,94 @@
         private void InitializeComponent()
         {
             panelTop = new Panel();
+            flowLayoutPanelTop = new FlowLayoutPanel();
+            buttonAdd = new Button();
+            buttonEdit = new Button();
+            buttonDelete = new Button();
+            buttonLoan = new Button();
             labelName = new Label();
             buttonLogout = new Button();
             dataGridViewBooks = new DataGridView();
             panelTop.SuspendLayout();
+            flowLayoutPanelTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewBooks).BeginInit();
             SuspendLayout();
             // 
             // panelTop
             // 
             panelTop.BackColor = Color.AliceBlue;
+            panelTop.Controls.Add(flowLayoutPanelTop);
             panelTop.Controls.Add(labelName);
             panelTop.Controls.Add(buttonLogout);
             panelTop.Dock = DockStyle.Top;
             panelTop.Location = new Point(10, 10);
             panelTop.Name = "panelTop";
-            panelTop.Size = new Size(964, 71);
+            panelTop.Size = new Size(964, 85);
             panelTop.TabIndex = 0;
+            // 
+            // flowLayoutPanelTop
+            // 
+            flowLayoutPanelTop.Controls.Add(buttonAdd);
+            flowLayoutPanelTop.Controls.Add(buttonEdit);
+            flowLayoutPanelTop.Controls.Add(buttonDelete);
+            flowLayoutPanelTop.Controls.Add(buttonLoan);
+            flowLayoutPanelTop.Dock = DockStyle.Left;
+            flowLayoutPanelTop.FlowDirection = FlowDirection.TopDown;
+            flowLayoutPanelTop.Location = new Point(0, 0);
+            flowLayoutPanelTop.Name = "flowLayoutPanelTop";
+            flowLayoutPanelTop.Size = new Size(713, 85);
+            flowLayoutPanelTop.TabIndex = 7;
+            // 
+            // buttonAdd
+            // 
+            buttonAdd.BackColor = Color.FromArgb(74, 111, 165);
+            buttonAdd.Dock = DockStyle.Right;
+            buttonAdd.FlatStyle = FlatStyle.Flat;
+            buttonAdd.Location = new Point(3, 3);
+            buttonAdd.Name = "buttonAdd";
+            buttonAdd.Size = new Size(148, 71);
+            buttonAdd.TabIndex = 6;
+            buttonAdd.Text = "Добавить";
+            buttonAdd.UseVisualStyleBackColor = false;
+            buttonAdd.Click += ButtonAdd_Click;
+            // 
+            // buttonEdit
+            // 
+            buttonEdit.BackColor = Color.FromArgb(74, 111, 165);
+            buttonEdit.Dock = DockStyle.Right;
+            buttonEdit.FlatStyle = FlatStyle.Flat;
+            buttonEdit.Location = new Point(157, 3);
+            buttonEdit.Name = "buttonEdit";
+            buttonEdit.Size = new Size(148, 71);
+            buttonEdit.TabIndex = 7;
+            buttonEdit.Text = "Редактировать";
+            buttonEdit.UseVisualStyleBackColor = false;
+            buttonEdit.Click += ButtonEdit_Click;
+            // 
+            // buttonDelete
+            // 
+            buttonDelete.BackColor = Color.FromArgb(74, 111, 165);
+            buttonDelete.Dock = DockStyle.Right;
+            buttonDelete.FlatStyle = FlatStyle.Flat;
+            buttonDelete.Location = new Point(311, 3);
+            buttonDelete.Name = "buttonDelete";
+            buttonDelete.Size = new Size(148, 71);
+            buttonDelete.TabIndex = 8;
+            buttonDelete.Text = "Удалить";
+            buttonDelete.UseVisualStyleBackColor = false;
+            buttonDelete.Click += ButtonDelete_Click;
+            // 
+            // buttonLoan
+            // 
+            buttonLoan.BackColor = Color.FromArgb(74, 111, 165);
+            buttonLoan.Dock = DockStyle.Right;
+            buttonLoan.FlatStyle = FlatStyle.Flat;
+            buttonLoan.Location = new Point(465, 3);
+            buttonLoan.Name = "buttonLoan";
+            buttonLoan.Size = new Size(148, 71);
+            buttonLoan.TabIndex = 9;
+            buttonLoan.Text = "Займ книг";
+            buttonLoan.UseVisualStyleBackColor = false;
             // 
             // labelName
             // 
@@ -64,7 +135,7 @@
             buttonLogout.FlatStyle = FlatStyle.Flat;
             buttonLogout.Location = new Point(816, 0);
             buttonLogout.Name = "buttonLogout";
-            buttonLogout.Size = new Size(148, 71);
+            buttonLogout.Size = new Size(148, 85);
             buttonLogout.TabIndex = 5;
             buttonLogout.Text = "Выйти";
             buttonLogout.UseVisualStyleBackColor = false;
@@ -83,13 +154,13 @@
             dataGridViewBooks.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewBooks.ColumnHeadersVisible = false;
             dataGridViewBooks.Dock = DockStyle.Fill;
-            dataGridViewBooks.Location = new Point(10, 81);
+            dataGridViewBooks.Location = new Point(10, 95);
             dataGridViewBooks.MultiSelect = false;
             dataGridViewBooks.Name = "dataGridViewBooks";
             dataGridViewBooks.ReadOnly = true;
             dataGridViewBooks.RowHeadersVisible = false;
             dataGridViewBooks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewBooks.Size = new Size(964, 470);
+            dataGridViewBooks.Size = new Size(964, 456);
             dataGridViewBooks.TabIndex = 1;
             // 
             // FormBooks
@@ -107,6 +178,7 @@
             Text = "Книги";
             panelTop.ResumeLayout(false);
             panelTop.PerformLayout();
+            flowLayoutPanelTop.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridViewBooks).EndInit();
             ResumeLayout(false);
         }
@@ -117,5 +189,11 @@
         private Button buttonLogout;
         private Label labelName;
         private DataGridView dataGridViewBooks;
+        private FlowLayoutPanel flowLayoutPanelTop;
+        private Button buttonAdd;
+        private Button button2;
+        private Button buttonDelete;
+        private Button buttonEdit;
+        private Button buttonLoan;
     }
 }

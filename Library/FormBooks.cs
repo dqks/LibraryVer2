@@ -118,8 +118,7 @@ namespace Library
                 "Страниц: " + book.PagesAmount + Environment.NewLine +
                 "Всего экземпляров: " + book.ExamplesAmount + Environment.NewLine +
                 "Доступно экземпляров: " + book.Available + Environment.NewLine +
-                "Аннотация: " + book.Annotation + Environment.NewLine;
-
+                "Аннотация: " + book.Annotation;
         }
 
         private void ButtonLogout_Click(object sender, EventArgs e)
@@ -141,6 +140,61 @@ namespace Library
                 return;
             }
 
+            using (var db = new LibraryShtinContext())
+            {
+                try
+                {
+
+                    if (
+                            form.comboBoxPublisher.SelectedValue == null ||
+                            form.comboBoxGenre.SelectedValue == null ||
+                            form.comboBoxAuthor.SelectedValue == null ||
+                            String.IsNullOrEmpty(form.textBoxPageAmount.Text) ||
+                            String.IsNullOrEmpty(form.textBoxName.Text) ||
+                            String.IsNullOrEmpty(form.richTextBoxAnnotation.Text) ||
+                            String.IsNullOrEmpty(form.textBoxIsbn.Text) ||
+                            String.IsNullOrEmpty(form.textBoxPublicYear.Text) ||
+                            String.IsNullOrEmpty(form.textBoxExamplesAmount.Text) ||
+                            String.IsNullOrEmpty(form.textBoxAvailableExamples.Text)
+                        )
+                    {
+                        throw new Exception("Все поля должны быть заполнены");
+                    }
+
+                    if (
+                            Int32.Parse(form.textBoxPublicYear.Text) < 0 ||
+                            Int32.Parse(form.textBoxAvailableExamples.Text) < 0 ||
+                            Int32.Parse(form.textBoxPageAmount.Text) < 0 ||
+                            Int32.Parse(form.textBoxExamplesAmount.Text) < 0
+                        )
+                    {
+                        throw new Exception("Значения не могут быть меньше нуля");
+                    }
+
+                    Book book = new Book
+                    {
+                        Name = form.textBoxName.Text,
+                        Annotation = form.textBoxName.Text,
+                        Available = Int32.Parse(form.textBoxAvailableExamples.Text),
+                        IdAuthor = (int)form.comboBoxAuthor.SelectedValue,
+                        IdGenre = (int)form.comboBoxGenre.SelectedValue,
+                        IdPublisher = (int)form.comboBoxPublisher.SelectedValue,
+                        Isbn = form.textBoxIsbn.Text,
+                        PublicYear = Int32.Parse(form.textBoxPublicYear.Text),
+                        PagesAmount = Int32.Parse(form.textBoxPageAmount.Text),
+                        ExamplesAmount = Int32.Parse(form.textBoxExamplesAmount.Text)
+                    };
+
+                    db.Add(book);
+                    db.SaveChanges();
+                    LoadBooks();
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show("Ошибка: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void ButtonEdit_Click(object sender, EventArgs e)
@@ -161,21 +215,6 @@ namespace Library
                     {
                         return;
                     }
-
-
-
-                    //comboBoxAuthor.SelectedValue = Book.IdAuthor;
-                    //comboBoxGenre.SelectedValue = Book.IdGenre;
-                    //comboBoxPublisher.SelectedValue = Book.IdPublisher;
-
-                    //textBoxIsbn.Text = Book.Isbn;
-                    //richTextBoxAnnotation.Text = Book.Annotation;
-                    //textBoxName.Text = Book.Name;
-                    //textBoxPageAmount.Text = Book.PagesAmount.ToString();
-                    //textBoxPublicYear.Text = Book.PublicYear.ToString();
-                    //textBoxExamplesAmount.Text = Book.ExamplesAmount.ToString();
-                    //textBoxAvailableExamples.Text = Book.Available.ToString();
-
                     if (
                             form.comboBoxPublisher.SelectedValue == null ||
                             form.comboBoxGenre.SelectedValue == null ||
@@ -189,7 +228,17 @@ namespace Library
                             String.IsNullOrEmpty(form.textBoxAvailableExamples.Text)
                         )
                     {
+                        throw new Exception("Все поля должны быть заполнены");
+                    }
 
+                    if (
+                            Int32.Parse(form.textBoxPublicYear.Text) < 0 ||
+                            Int32.Parse(form.textBoxAvailableExamples.Text) < 0 ||
+                            Int32.Parse(form.textBoxPageAmount.Text) < 0 ||
+                            Int32.Parse(form.textBoxExamplesAmount.Text) < 0
+                        )
+                    {
+                        throw new Exception("Значения не могут быть меньше нуля");
                     }
 
                     book.Name = form.textBoxName.Text;
@@ -209,7 +258,6 @@ namespace Library
                 catch (Exception ex)
                 {
                     MessageBox.Show("Ошибка: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
                 }
             }
         }

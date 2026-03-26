@@ -101,13 +101,13 @@ namespace Library
                            .Where(b => EF.Functions.Like(b.Name, this.bookName + "%"))
                            .ToList();
                     }
-                    else 
+                    else
                     {
-                    books = db.Books
-                       .Include(i => i.IdAuthorNavigation)
-                       .Include(i => i.IdGenreNavigation)
-                       .Include(i => i.IdPublisherNavigation)
-                       .ToList();
+                        books = db.Books
+                           .Include(i => i.IdAuthorNavigation)
+                           .Include(i => i.IdGenreNavigation)
+                           .Include(i => i.IdPublisherNavigation)
+                           .ToList();
                     }
 
 

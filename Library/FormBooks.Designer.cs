@@ -37,9 +37,14 @@
             labelName = new Label();
             buttonLogout = new Button();
             dataGridViewBooks = new DataGridView();
+            panelFilter = new Panel();
+            comboBoxAvailable = new ComboBox();
+            comboBoxAuthor = new ComboBox();
+            textBoxName = new TextBox();
             panelTop.SuspendLayout();
             flowLayoutPanelTop.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewBooks).BeginInit();
+            panelFilter.SuspendLayout();
             SuspendLayout();
             // 
             // panelTop
@@ -64,7 +69,7 @@
             flowLayoutPanelTop.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanelTop.Location = new Point(0, 0);
             flowLayoutPanelTop.Name = "flowLayoutPanelTop";
-            flowLayoutPanelTop.Size = new Size(713, 85);
+            flowLayoutPanelTop.Size = new Size(658, 85);
             flowLayoutPanelTop.TabIndex = 7;
             // 
             // buttonAdd
@@ -153,15 +158,53 @@
             dataGridViewBooks.BorderStyle = BorderStyle.None;
             dataGridViewBooks.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dataGridViewBooks.ColumnHeadersVisible = false;
-            dataGridViewBooks.Dock = DockStyle.Fill;
-            dataGridViewBooks.Location = new Point(10, 95);
+            dataGridViewBooks.Dock = DockStyle.Right;
+            dataGridViewBooks.Location = new Point(251, 95);
             dataGridViewBooks.MultiSelect = false;
             dataGridViewBooks.Name = "dataGridViewBooks";
             dataGridViewBooks.ReadOnly = true;
             dataGridViewBooks.RowHeadersVisible = false;
             dataGridViewBooks.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dataGridViewBooks.Size = new Size(1464, 656);
+            dataGridViewBooks.Size = new Size(1223, 656);
             dataGridViewBooks.TabIndex = 1;
+            // 
+            // panelFilter
+            // 
+            panelFilter.Controls.Add(comboBoxAvailable);
+            panelFilter.Controls.Add(comboBoxAuthor);
+            panelFilter.Controls.Add(textBoxName);
+            panelFilter.Dock = DockStyle.Left;
+            panelFilter.Location = new Point(10, 95);
+            panelFilter.Name = "panelFilter";
+            panelFilter.Size = new Size(235, 656);
+            panelFilter.TabIndex = 2;
+            // 
+            // comboBoxAvailable
+            // 
+            comboBoxAvailable.FormattingEnabled = true;
+            comboBoxAvailable.Location = new Point(17, 233);
+            comboBoxAvailable.Name = "comboBoxAvailable";
+            comboBoxAvailable.Size = new Size(196, 27);
+            comboBoxAvailable.TabIndex = 2;
+            comboBoxAvailable.SelectedIndexChanged += ComboBoxAvailable_SelectedIndexChanged;
+            // 
+            // comboBoxAuthor
+            // 
+            comboBoxAuthor.FormattingEnabled = true;
+            comboBoxAuthor.Location = new Point(17, 165);
+            comboBoxAuthor.Name = "comboBoxAuthor";
+            comboBoxAuthor.Size = new Size(196, 27);
+            comboBoxAuthor.TabIndex = 1;
+            comboBoxAuthor.SelectedIndexChanged += ComboBoxAuthor_SelectedIndexChanged;
+            // 
+            // textBoxName
+            // 
+            textBoxName.Location = new Point(17, 90);
+            textBoxName.Name = "textBoxName";
+            textBoxName.PlaceholderText = "Название книги";
+            textBoxName.Size = new Size(196, 26);
+            textBoxName.TabIndex = 0;
+            textBoxName.TextChanged += TextBoxName_TextChanged;
             // 
             // FormBooks
             // 
@@ -169,6 +212,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1484, 761);
+            Controls.Add(panelFilter);
             Controls.Add(dataGridViewBooks);
             Controls.Add(panelTop);
             Font = new Font("Times New Roman", 12F, FontStyle.Regular, GraphicsUnit.Point, 204);
@@ -181,6 +225,8 @@
             panelTop.PerformLayout();
             flowLayoutPanelTop.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridViewBooks).EndInit();
+            panelFilter.ResumeLayout(false);
+            panelFilter.PerformLayout();
             ResumeLayout(false);
         }
 
@@ -196,5 +242,10 @@
         private Button buttonDelete;
         private Button buttonEdit;
         private Button buttonLoan;
+        private Panel panelFilter;
+        private ComboBox comboBox2;
+        private ComboBox comboBoxAuthor;
+        private ComboBox comboBoxAvailable;
+        private TextBox textBoxName;
     }
 }

@@ -9,6 +9,12 @@ namespace Library
         public bool IsGuest { get; private set; }
         public User User { get; private set; }
 
+        public string bookName = "";
+
+        public Author? authorFilter = null;
+
+        public string availableFilter = "";
+
         public FormBooks(bool isGuest, User user)
         {
             InitializeComponent();
@@ -27,6 +33,8 @@ namespace Library
                     if (role.RoleName == "Читатель")
                     {
                         flowLayoutPanelTop.Visible = false;
+                        panelFilter.Visible = false;
+                        dataGridViewBooks.Dock = DockStyle.Fill;
                     }
                 }
 
@@ -34,8 +42,25 @@ namespace Library
             }
             else
             {
+                panelFilter.Visible = false;
                 flowLayoutPanelTop.Visible = false;
+                dataGridViewBooks.Dock = DockStyle.Fill;
                 labelName.Text = "Гость";
+            }
+
+
+            using (var db = new LibraryShtinContext())
+            {
+                List<Author >authors = new List<Author >();
+                authors.Add(new Author { Id = -1, AuthorName = "Все авторы" });
+                authors.AddRange(db.Authors.ToList());
+
+                comboBoxAuthor.DataSource = authors;
+                comboBoxAuthor.ValueMember = "Id";
+                comboBoxAuthor.DisplayMember = "AuthorName";
+                comboBoxAuthor.SelectedValue = -1;
+
+                comboBoxAvailable.Items.AddRange([ "По возрастанию", "По убыванию"]);
             }
 
             var colId = new DataGridViewTextBoxColumn();
@@ -44,8 +69,8 @@ namespace Library
 
             var colPhoto = new DataGridViewImageColumn();
             colPhoto.Name = "colPhoto";
-            colPhoto.Width = 50;
             colPhoto.FillWeight = 30;
+            colPhoto.ImageLayout = DataGridViewImageCellLayout.Zoom;
 
 
             var colText = new DataGridViewTextBoxColumn();
@@ -55,21 +80,38 @@ namespace Library
 
             dataGridViewBooks.Columns.AddRange([colId, colPhoto, colText]);
 
-            LoadBooks();
+            LoadBooks(this.bookName, this.authorFilter, this.availableFilter);
         }
 
-        private void LoadBooks()
+        private void LoadBooks(string bookNameFilter, Author authorFilter, string availableFilter)
         {
             try
             {
                 using (var db = new LibraryShtinContext())
                 {
 
-                    var books = db.Books
-                        .Include(i => i.IdAuthorNavigation)
-                        .Include(i => i.IdGenreNavigation)
-                        .Include(i => i.IdPublisherNavigation)
-                        .ToList();
+                    List<Book> books;
+
+                    if (!String.IsNullOrWhiteSpace(this.bookName) || !String.IsNullOrEmpty(this.bookName))
+                    {
+                        books = db.Books
+                           .Include(i => i.IdAuthorNavigation)
+                           .Include(i => i.IdGenreNavigation)
+                           .Include(i => i.IdPublisherNavigation)
+                           .Where(b => EF.Functions.Like(b.Name, this.bookName + "%"))
+                           .ToList();
+                    }
+                    else 
+                    {
+                    books = db.Books
+                       .Include(i => i.IdAuthorNavigation)
+                       .Include(i => i.IdGenreNavigation)
+                       .Include(i => i.IdPublisherNavigation)
+                       .ToList();
+                    }
+
+
+
 
                     dataGridViewBooks.Rows.Clear();
 
@@ -100,10 +142,7 @@ namespace Library
             catch (Exception ex)
             {
                 MessageBox.Show("Ошибка: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
             }
-
-
         }
 
         private string LoadColText(Book book)
@@ -194,7 +233,9 @@ namespace Library
 
                     db.Add(book);
                     db.SaveChanges();
-                    LoadBooks();
+                    LoadBooks(this.bookName, this.authorFilter, this.availableFilter);
+                    MessageBox.Show("Книга добавлена", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
 
                 }
                 catch (Exception ex)
@@ -268,7 +309,10 @@ namespace Library
                     book.IdAuthor = (int)(form.comboBoxAuthor.SelectedValue);
 
                     db.SaveChanges();
-                    LoadBooks();
+                    LoadBooks(this.bookName, this.authorFilter, this.availableFilter);
+
+                    MessageBox.Show("Книга изменена", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
                 }
                 catch (Exception ex)
                 {
@@ -300,15 +344,32 @@ namespace Library
 
                     db.Books.Remove(book);
                     db.SaveChanges();
-                    LoadBooks();
+                    LoadBooks(this.bookName, this.authorFilter, this.availableFilter);
+
+                    MessageBox.Show("Книга удалена", "Успех", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show("Ошибка: " + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-
                 }
             }
 
+        }
+
+        private void TextBoxName_TextChanged(object sender, EventArgs e)
+        {
+            this.bookName= this.textBoxName.Text;
+            LoadBooks(this.bookName, this.authorFilter, this.availableFilter);
+        }
+
+        private void ComboBoxAuthor_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.authorFilter= (Author)this.comboBoxAuthor.SelectedItem;
+        }
+
+        private void ComboBoxAvailable_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.availableFilter = (string)this.comboBoxAvailable.SelectedItem;
         }
     }
 }
